@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.2-b608 (trunk-7979; 2015-01-21T12:50:19+0000) JAXWS-RI/2.2.11-b150120.1832 JAXWS-API/2.2.12 JAXB-RI/2.2.12-b141219.1637 JAXB-API/2.2.13-b141020.1521 svn-revision#unknown. --><xs:schema xmlns:tns="http://service.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.com/">
+
+<xs:element name="CreateBooking" type="tns:CreateBooking"/>
+
+<xs:element name="CreateBookingResponse" type="tns:CreateBookingResponse"/>
+
+<xs:element name="ModifyBooking" type="tns:ModifyBooking"/>
+
+<xs:element name="airport" type="tns:airport"/>
+
+<xs:element name="booking" type="tns:booking"/>
+
+<xs:element name="cancelBooking" type="tns:cancelBooking"/>
+
+<xs:element name="departure" type="tns:departure"/>
+
+<xs:element name="destination" type="tns:destination"/>
+
+<xs:element name="flight" type="tns:flight"/>
+
+<xs:element name="getBookingById" type="tns:getBookingById"/>
+
+<xs:element name="getBookingByIdResponse" type="tns:getBookingByIdResponse"/>
+
+<xs:element name="getBookingPassenger" type="tns:getBookingPassenger"/>
+
+<xs:element name="getBookingPassengerCount" type="tns:getBookingPassengerCount"/>
+
+<xs:element name="getBookingPassengerCountResponse" type="tns:getBookingPassengerCountResponse"/>
+
+<xs:element name="getBookingPassengerResponse" type="tns:getBookingPassengerResponse"/>
+
+<xs:element name="hello" type="tns:hello"/>
+
+<xs:element name="helloResponse" type="tns:helloResponse"/>
+
+<xs:element name="location" type="tns:location"/>
+
+<xs:element name="passenger" type="tns:passenger"/>
+
+<xs:element name="user" type="tns:user"/>
+
+<xs:complexType name="CreateBooking">
+<xs:sequence>
+<xs:element name="paymentMethod" type="xs:string" minOccurs="0"/>
+<xs:element name="flightId" type="xs:int"/>
+<xs:element name="userId" type="xs:int"/>
+<xs:element name="passengerId" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="CreateBookingResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:booking" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="booking">
+<xs:sequence>
+<xs:element name="bookingTime" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="flightId" type="tns:flight" minOccurs="0"/>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="paymentMethod" type="xs:string" minOccurs="0"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+<xs:element name="totalPrice" type="xs:double"/>
+<xs:element name="userId" type="tns:user" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="flight">
+<xs:sequence>
+<xs:element name="boardingTime" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="company" type="xs:string" minOccurs="0"/>
+<xs:element name="departureId" type="tns:departure" minOccurs="0"/>
+<xs:element name="destinationId" type="tns:destination" minOccurs="0"/>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="price" type="xs:double"/>
+<xs:element name="quality" type="xs:string" minOccurs="0"/>
+<xs:element name="quota" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="departure">
+<xs:sequence>
+<xs:element name="airportID" type="tns:airport" minOccurs="0"/>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="airport">
+<xs:sequence>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="locationId" type="tns:location" minOccurs="0"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="location">
+<xs:sequence>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="province" type="xs:string" minOccurs="0"/>
+<xs:element name="town" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="destination">
+<xs:sequence>
+<xs:element name="airportID" type="tns:airport" minOccurs="0"/>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="user">
+<xs:sequence>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+<xs:element name="password" type="xs:string" minOccurs="0"/>
+<xs:element name="token" type="xs:string" minOccurs="0"/>
+<xs:element name="username" type="xs:string" minOccurs="0"/>
+<xs:element name="validDate" type="xs:dateTime" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ModifyBooking">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+<xs:element name="status" type="xs:string" minOccurs="0"/>
+<xs:element name="paymentMethod" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getBookingById">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getBookingByIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:booking" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="cancelBooking">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getBookingPassenger">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getBookingPassengerResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:passenger" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="passenger">
+<xs:sequence>
+<xs:element name="id" type="xs:int" minOccurs="0"/>
+<xs:element name="idNumber" type="xs:string" minOccurs="0"/>
+<xs:element name="idUsed" type="xs:string" minOccurs="0"/>
+<xs:element name="passengerName" type="xs:string" minOccurs="0"/>
+<xs:element name="userId" type="tns:user" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getBookingPassengerCount">
+<xs:sequence>
+<xs:element name="id" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getBookingPassengerCountResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

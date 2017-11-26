@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="1.10.0">
+  <bpmn:collaboration id="Collaboration_0qaceoe">
+    <bpmn:participant id="Participant_0up8j3j" name="FlightApp" processRef="Passenger" />
+  </bpmn:collaboration>
+  <bpmn:process id="Passenger" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="userId" label="userId" type="string" defaultValue="1" />
+          <camunda:formField id="idUsed" label="idUsed" type="string" />
+          <camunda:formField id="token" label="token" type="string" defaultValue="asdf-ghjk-lmzx-cvbn" />
+          <camunda:formField id="name" label="name" type="string" />
+          <camunda:formField id="idNumber" label="idNumber" type="string" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_1rsztzu</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="CheckCredential" name="Check User Credential" camunda:expression="${userBusinessLogic.checkCredential(execution)}">
+      <bpmn:incoming>SequenceFlow_1rsztzu</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_007fiaa</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="CheckResult">
+      <bpmn:incoming>SequenceFlow_007fiaa</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1bsetbb</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1dtacon</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="PersistPass" name="Persist Passenger" camunda:expression="${passengerBP.persistPassenger(execution)}">
+      <bpmn:incoming>SequenceFlow_1bsetbb</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0re8n6v</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_0qe532g">
+      <bpmn:incoming>SequenceFlow_0re8n6v</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:scriptTask id="TaskHit" name="Message" scriptFormat="javascript">
+      <bpmn:incoming>SequenceFlow_1dtacon</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0mzxjzp</bpmn:outgoing>
+      <bpmn:script><![CDATA[var variabel = execution.getVariable("approved")
+var system = java.lang.System;
+system.out.println(variabel);]]></bpmn:script>
+    </bpmn:scriptTask>
+    <bpmn:endEvent id="EndEvent_04fl5pd">
+      <bpmn:incoming>SequenceFlow_0mzxjzp</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1rsztzu" sourceRef="StartEvent_1" targetRef="CheckCredential" />
+    <bpmn:sequenceFlow id="SequenceFlow_007fiaa" sourceRef="CheckCredential" targetRef="CheckResult" />
+    <bpmn:sequenceFlow id="SequenceFlow_1bsetbb" sourceRef="CheckResult" targetRef="PersistPass">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${userBusinessLogic.getCredentialStatus(execution)}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_1dtacon" sourceRef="CheckResult" targetRef="TaskHit">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!userBusinessLogic.getCredentialStatus(execution)}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SequenceFlow_0re8n6v" sourceRef="PersistPass" targetRef="EndEvent_0qe532g" />
+    <bpmn:sequenceFlow id="SequenceFlow_0mzxjzp" sourceRef="TaskHit" targetRef="EndEvent_04fl5pd" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0qaceoe">
+      <bpmndi:BPMNShape id="Participant_0up8j3j_di" bpmnElement="Participant_0up8j3j">
+        <dc:Bounds x="174" y="32" width="848" height="412" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="224" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="197" y="175" width="90" height="20" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_1lrtlim_di" bpmnElement="CheckCredential">
+        <dc:Bounds x="306" y="117" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1rsztzu_di" bpmnElement="SequenceFlow_1rsztzu">
+        <di:waypoint xsi:type="dc:Point" x="260" y="157" />
+        <di:waypoint xsi:type="dc:Point" x="306" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="238" y="136" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_0the3nm_di" bpmnElement="PersistPass">
+        <dc:Bounds x="601" y="117" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_0qe532g_di" bpmnElement="EndEvent_0qe532g">
+        <dc:Bounds x="776" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="749" y="179" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0re8n6v_di" bpmnElement="SequenceFlow_0re8n6v">
+        <di:waypoint xsi:type="dc:Point" x="701" y="157" />
+        <di:waypoint xsi:type="dc:Point" x="776" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="694" y="136" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ExclusiveGateway_0jaokf9_di" bpmnElement="CheckResult" isMarkerVisible="true">
+        <dc:Bounds x="484" y="132" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="186" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_007fiaa_di" bpmnElement="SequenceFlow_007fiaa">
+        <di:waypoint xsi:type="dc:Point" x="406" y="157" />
+        <di:waypoint xsi:type="dc:Point" x="484" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="400" y="136" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1bsetbb_di" bpmnElement="SequenceFlow_1bsetbb">
+        <di:waypoint xsi:type="dc:Point" x="534" y="157" />
+        <di:waypoint xsi:type="dc:Point" x="601" y="157" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="523" y="136" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1dtacon_di" bpmnElement="SequenceFlow_1dtacon">
+        <di:waypoint xsi:type="dc:Point" x="509" y="182" />
+        <di:waypoint xsi:type="dc:Point" x="509" y="203" />
+        <di:waypoint xsi:type="dc:Point" x="509" y="203" />
+        <di:waypoint xsi:type="dc:Point" x="509" y="224" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="479" y="197" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ScriptTask_0w0eq9e_di" bpmnElement="TaskHit">
+        <dc:Bounds x="460" y="224" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_04fl5pd_di" bpmnElement="EndEvent_04fl5pd">
+        <dc:Bounds x="491" y="364" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="464" y="404" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0mzxjzp_di" bpmnElement="SequenceFlow_0mzxjzp">
+        <di:waypoint xsi:type="dc:Point" x="510" y="304" />
+        <di:waypoint xsi:type="dc:Point" x="510" y="334" />
+        <di:waypoint xsi:type="dc:Point" x="509" y="334" />
+        <di:waypoint xsi:type="dc:Point" x="509" y="364" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="465" y="313" width="90" height="12" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
