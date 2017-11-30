@@ -76,7 +76,7 @@ public class FlightBP {
         try { // Call Web Service Operation
             com.service.FlightService port = service.getFlightServicePort();
             // TODO initialize WS operation arguments here
-            int flightId = Integer.parseInt((String) variables.get("flightId"));
+            int flightId = (Integer) variables.get("flightId");
             Integer totalPassenger = (Integer) variables.get("passengerCount");
             // TODO process result here
             boolean result = port.decreaseQuota(flightId, totalPassenger);

@@ -136,15 +136,15 @@ public class OrderBP {
     
     public void cancelBooking(DelegateExecution delegateExecution) {
         System.out.println("canceled");
-//        Map<String, Object> variables = delegateExecution.getVariables();
-//        try {
-//            com.service.BookingService port = service.getBookingServicePort();
-//            int id = Integer.parseInt((String) variables.get("bookingId"));
-//            port.cancelBooking(id);
-//            System.out.println("cancel booking success");
-//        } catch (Exception ex) {
-//            System.out.println(ex.toString());
-//        }
+        Map<String, Object> variables = delegateExecution.getVariables();
+        try {
+            com.service.BookingService port = service.getBookingServicePort();
+            int id = Integer.parseInt((String) variables.get("bookingId"));
+            port.cancelBooking(id);
+            System.out.println("cancel booking success");
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+        }
 
     }
     
@@ -154,12 +154,11 @@ public class OrderBP {
         try {
             com.service.BookingService port = service.getBookingServicePort();
             int id = Integer.parseInt((String) variables.get("bookingId"));
-            java.lang.String status = (String) variables.get("status");
+            java.lang.String status = "Lunas";
             java.lang.String paymentMethod = "";
             port.modifyBooking(id, status, paymentMethod);
         } catch (Exception ex) {
             System.out.println(ex.toString());
         }
-
     }
 }
